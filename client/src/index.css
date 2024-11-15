@@ -20,59 +20,80 @@
   flex-direction: column;
   justify-content: center;
 }
-.game .status{
+.game .status {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 34px;
   margin-bottom: 10px;
-  
 }
-.game .status img{
+.game .status img {
   width: 25px;
-  margin:0 15px;
+  margin: 0 15px;
 }
-.game .status p{
+.game .status p {
   margin: 0;
   color: #45f8c6;
+}
+.board_outer_cont {
+  display: flex;
+  position: relative;
+}
+
+.board_outer_cont .size_cont span {
+  position: absolute;
+  bottom: 0;
+  font-size: 40px;
+  font-weight: 600;
+  right: -21%;
+}
+.board_outer_cont input {
+  position: absolute;
+  transform: rotate(270deg);
+  width: 85%;
+  top: 41%;
+  right: -62%;
+  background-color: #45f8c6;
 }
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  width: 500px;
+  height: 500px;
 }
 .board .cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 150px;
+
   background-color: #223540;
   aspect-ratio: 1/1;
   cursor: pointer;
   border: 4px solid #111b22;
   outline: none;
+
   border-radius: 16px;
 }
-.board .cell img{
-  width: 65px;
+.board .cell img {
+  width: 75%;
 }
-.bottom-cont{
+.bottom-cont {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 300px;
   margin-top: 20px;
 }
-.bottom-cont button{
+.bottom-cont button {
   background-color: #223540;
   border: none;
   color: #45f8c6;
   font-size: 30px;
-  padding:24px 50px;
+  padding: 24px 50px;
   border-radius: 99px;
   cursor: pointer;
   transition: 0.2s background-color;
 }
-.bottom-cont button:hover{
-  
+.bottom-cont button:hover {
   background-color: #2c424e;
 }

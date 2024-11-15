@@ -2,35 +2,36 @@ import React, { useState } from "react";
 import crossImg from "../assets/cross.svg";
 import circleImg from "../assets/circle.svg";
 import Confetti from "../components/Confetti";
-const initialBOard = () => Array(9).fill({ img: null, value: null });
+import { useBoardSize } from "../store/boardSize";
+import { useGameStarted } from "../store/gameStarted";
+import { generateWinningPattern } from "../utils/generateWinningPattern";
+import { useWinningPatterns } from "../store/winningPatterns";
 const UseGame = () => {
+  const { boardSize } = useBoardSize();
+  const initialBOard = () =>
+    Array(boardSize * boardSize).fill({ img: null, value: null });
+  const { winningPatterns } = useWinningPatterns();
+  const { gameStarted, setGameStarted } = useGameStarted();
   const [board, setBoard] = useState(initialBOard());
   const [isXNext, setIsXNext] = useState(true);
-  const WINNING_PATTERNS = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
 
-  const calculateWinner = (currBoard) => {
-    for (let i = 0; i < WINNING_PATTERNS.length; i++) {
-      const [a, b, c] = WINNING_PATTERNS[i];
+  const calculateWinner = () => {
+    for (let i = 0; i < winningPatterns.length; i++) {
+      const indices = winningPatterns[i];
+
       if (
-        currBoard[a].value &&
-        currBoard[a].value === currBoard[b].value &&
-        currBoard[a].value === currBoard[c].value
+        indices.every(
+          (index) =>
+            board[index].value && board[index].value === board[indices[0]].value
+        )
       ) {
-        return currBoard[a].value;
+        return board[indices[0]].value;
       }
     }
     return null;
   };
   const handleClick = (i) => {
+    if (!gameStarted) setGameStarted(true);
     const winner = calculateWinner(board);
 
     if (winner || board[i].img) return;
@@ -97,11 +98,24 @@ const UseGame = () => {
     );
   };
   const resetGame = () => {
-    setBoard(initialBOard());
     setIsXNext(true);
+    setGameStarted(false);
+    setBoard(initialBOard());
   };
-
-  return { board, handleClick, calculateWinner, getStatusMessage, resetGame };
+  const setNewBoardSize = (newSize) => {
+    const newBoard = () =>
+      Array(newSize * newSize).fill({ img: null, value: null });
+    generateWinningPattern(newSize);
+    setBoard(newBoard());
+  };
+  return {
+    board,
+    handleClick,
+    calculateWinner,
+    getStatusMessage,
+    resetGame,
+    setNewBoardSize,
+  };
 };
 
 export default UseGame;
